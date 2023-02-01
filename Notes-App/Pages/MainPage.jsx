@@ -16,14 +16,7 @@ export default function MainPage(props) {
             toRender = <Text>Loading...</Text>;
             categoriesFromSto = JSON.parse(categoriesFromSto);
             toRender = categoriesFromSto.map((category) => {
-                return (
-                    <Category
-                        name={category.name}
-                        id={category.id}
-                        key={category.id}
-                        navigate={props.navigation.navigate}
-                    />
-                );
+                return <Category name={category.name} id={category.id} key={category.id} navigate={props.navigation.navigate} />;
             });
         }
         setCategories(toRender);
@@ -32,9 +25,8 @@ export default function MainPage(props) {
     return (
         <View style={styles.container}>
             <View style={{ marginTop: 10 }}></View>
-            <Text style={{ fontSize: 40, fontWeight: 'bold', color: 'red', backgroundColor: 'grey', borderRadius: 8 }}>
-                Notes App
-            </Text>
+
+            <Text style={{ fontSize: 40, fontWeight: 'bold', color: 'red', backgroundColor: 'grey', borderRadius: 8 }}>Notes App</Text>
             <View style={styles.btns}>
                 <TouchableOpacity
                     style={styles.btns}

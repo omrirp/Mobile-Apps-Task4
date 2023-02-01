@@ -2,6 +2,7 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../Comps/styles';
+import { Input, Icon } from '@rneui/themed';
 
 export default function AddCategory(props) {
     const [name, setName] = useState('');
@@ -30,14 +31,21 @@ export default function AddCategory(props) {
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: 30 }}>Add Category</Text>
-            <TextInput
+            <Input
+                placeholder='Comment'
+                leftIcon={{ type: 'font-awesome', name: 'comment' }}
+                onChangeText={(t) => {
+                    setName(t);
+                }}
+            />
+            {/* <TextInput
                 value={name}
                 placeholder='Category Name'
                 style={styles.input}
                 onChangeText={(t) => {
                     setName(t);
                 }}
-            ></TextInput>
+            ></TextInput> */}
             <TouchableOpacity style={styles.btns} onPress={() => {}}>
                 <Text
                     style={styles.btn}
@@ -46,10 +54,7 @@ export default function AddCategory(props) {
                             alert('Category must have a name !');
                             return;
                         }
-                        await AsyncStorage.setItem(
-                            'categories',
-                            JSON.stringify([...categories, { id: categoryCounter, name }])
-                        );
+                        await AsyncStorage.setItem('categories', JSON.stringify([...categories, { id: categoryCounter, name }]));
                         await AsyncStorage.setItem('categoryCounter', JSON.stringify(categoryCounter + 1));
                         props.navigation.navigate('Main Page');
                     }}

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../Comps/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Note from '../Comps/Note';
+import { Input, Icon } from '@rneui/themed';
 
 export default function Notes(props) {
     const [categoryId, setCategotyId] = useState(props.route.params.id);
@@ -36,14 +37,21 @@ export default function Notes(props) {
         <View style={styles.container}>
             <View style={{ marginTop: 10 }}></View>
             <Text style={{ fontSize: 30, color: 'green' }}>{categoryName} Notes</Text>
-            <TextInput
+            <Input
+                placeholder='Comment'
+                leftIcon={{ type: 'font-awesome', name: 'comment' }}
+                onChangeText={(value) => {
+                    setNote(value);
+                }}
+            />
+            {/* <TextInput
                 value={note}
                 placeholder='Note...'
                 style={styles.input}
                 onChangeText={(t) => {
                     setNote(t);
                 }}
-            ></TextInput>
+            ></TextInput> */}
             <TouchableOpacity
                 style={styles.btn}
                 onPress={async () => {
