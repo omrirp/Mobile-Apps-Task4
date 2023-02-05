@@ -2,7 +2,7 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../Comps/styles';
-import { Input, Icon } from '@rneui/themed';
+import { Input } from '@rneui/themed';
 
 export default function AddCategory(props) {
     const [name, setName] = useState('');
@@ -24,8 +24,8 @@ export default function AddCategory(props) {
         } else {
             setCategotyCounter(JSON.parse(counterFromSto));
         }
-        console.log(categoriesFromSto);
-        console.log(counterFromSto);
+        //console.log(categoriesFromSto);
+        //console.log(counterFromSto);
     }, []);
 
     return (
@@ -38,14 +38,6 @@ export default function AddCategory(props) {
                     setName(t);
                 }}
             />
-            {/* <TextInput
-                value={name}
-                placeholder='Category Name'
-                style={styles.input}
-                onChangeText={(t) => {
-                    setName(t);
-                }}
-            ></TextInput> */}
             <TouchableOpacity style={styles.btns} onPress={() => {}}>
                 <Text
                     style={styles.btn}

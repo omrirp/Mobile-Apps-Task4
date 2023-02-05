@@ -1,26 +1,34 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from '../Comps/styles';
 import Category from '../Comps/Category';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function MainPage(props) {
     const [categories, setCategories] = useState(<Text>Loading...</Text>);
 
-    useEffect(async () => {
+    useEffect(() => {
+        renderCategories();
+    }, []);
+
+    // useEffect(() => {
+    //     renderCategories();
+    // }, [categories]);
+
+    async function renderCategories() {
         let categoriesFromSto = await AsyncStorage.getItem('categories');
         let toRender;
         if (!categoriesFromSto) {
             toRender = <Text>'No category cteated!'</Text>;
         } else {
-            toRender = <Text>Loading...</Text>;
             categoriesFromSto = JSON.parse(categoriesFromSto);
             toRender = categoriesFromSto.map((category) => {
                 return <Category name={category.name} id={category.id} key={category.id} navigate={props.navigation.navigate} />;
             });
         }
         setCategories(toRender);
-    }, []);
+    }
 
     return (
         <View style={styles.container}>

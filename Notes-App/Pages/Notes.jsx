@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../Comps/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Note from '../Comps/Note';
-import { Input, Icon } from '@rneui/themed';
+import { Input } from '@rneui/themed';
 
 export default function Notes(props) {
     const [categoryId, setCategotyId] = useState(props.route.params.id);
@@ -12,7 +12,15 @@ export default function Notes(props) {
     const [notesToRender, setNotesToRender] = useState(<Text>Loading...</Text>);
     const [notes, setNotes] = useState([]);
 
-    useEffect(async () => {
+    useEffect(() => {
+        renderNotes();
+    }, []);
+
+    // useEffect(() => {
+    //     renderNotes();
+    // }, [notes]);
+
+    async function renderNotes() {
         //await AsyncStorage.removeItem('notes');
         let notesFromSto = await AsyncStorage.getItem('notes');
         if (!notesFromSto) {
@@ -23,15 +31,16 @@ export default function Notes(props) {
         }
 
         let filteredNotes = notesFromSto.filter((note) => note.categoryId === categoryId);
+        let index = 1;
         let toRender = filteredNotes.map((note) => {
-            return <Note name={note.note} />;
+            return <Note name={note.note} key={index++} />;
         });
 
         if (toRender.length === 0) {
             toRender = <Text>No notes created !</Text>;
         }
         setNotesToRender(toRender);
-    }, []);
+    }
 
     return (
         <View style={styles.container}>
@@ -44,14 +53,6 @@ export default function Notes(props) {
                     setNote(value);
                 }}
             />
-            {/* <TextInput
-                value={note}
-                placeholder='Note...'
-                style={styles.input}
-                onChangeText={(t) => {
-                    setNote(t);
-                }}
-            ></TextInput> */}
             <TouchableOpacity
                 style={styles.btn}
                 onPress={async () => {
@@ -60,6 +61,7 @@ export default function Notes(props) {
                         return alert('Fill text before saveing');
                     }
                     await AsyncStorage.setItem('notes', JSON.stringify([...notes, { categoryId, note }]));
+                    renderNotes();
                 }}
             >
                 <Text style={styles.btn}>Save Note!</Text>
