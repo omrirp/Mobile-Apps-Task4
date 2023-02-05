@@ -8,14 +8,19 @@ import { useFocusEffect } from '@react-navigation/native';
 export default function MainPage(props) {
     const [categories, setCategories] = useState(<Text>Loading...</Text>);
 
+    // Render the Main page when the app is opened for the first time
     useEffect(() => {
         renderCategories();
     }, []);
 
-    // useEffect(() => {
-    //     renderCategories();
-    // }, [categories]);
+    // Render the Main page each time the app returns to it
+    useFocusEffect(
+        React.useCallback(() => {
+            renderCategories();
+        }, [])
+    );
 
+    // Support function for rendering Categories
     async function renderCategories() {
         let categoriesFromSto = await AsyncStorage.getItem('categories');
         let toRender;
@@ -24,6 +29,7 @@ export default function MainPage(props) {
         } else {
             categoriesFromSto = JSON.parse(categoriesFromSto);
             toRender = categoriesFromSto.map((category) => {
+                // Need to pass to Category the navigate function to gain the ability to navigate
                 return <Category name={category.name} id={category.id} key={category.id} navigate={props.navigation.navigate} />;
             });
         }
@@ -39,6 +45,7 @@ export default function MainPage(props) {
                 <TouchableOpacity
                     style={styles.btns}
                     onPress={() => {
+                        // Navigate back to Main page after the Category was added
                         props.navigation.navigate('Add Category');
                     }}
                 >
